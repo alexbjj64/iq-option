@@ -70,7 +70,7 @@ describe('A login API and websocket BDD test', () => {
         after(() => ws.disconnect());
 
         for(let i=1; i<=5; i++) {
-            it(`should respond with timeSync after ${i + 1000} ms`, () => {
+            it(`should respond with timeSync after ${i * 1000} ms`, () => {
                 return wait(1000).then(() => {
                     const messages = ws.receive().filter(msg => msg.name === 'timeSync');
                     expect(messages.length).to.equal(1);
