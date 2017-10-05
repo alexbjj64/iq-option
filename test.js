@@ -49,12 +49,14 @@ describe('A login API and websocket BDD test', () => {
     });
 
     describe('Websocket subscription', () => {
+        let ssid = '';
+
         before(() => {
             return login(URI, 'test', 'password').then(res => {
                 expect(res).to.have.cookie('ssid'); 
                 const cookies = parseCookies(res.headers['set-cookie']);
                 expect(cookies.ssid).to.be.a('string');
-                this.ssid = cookies.ssid;
+                ssid = cookies.ssid;
             });
         });
 
@@ -62,7 +64,7 @@ describe('A login API and websocket BDD test', () => {
             return ws.connect(WS_URI).then(() => {
                 ws.send({
                     name: 'ssid',
-                    msg: this.ssid
+                    msg: ssid
                 });
             });
         });
@@ -78,7 +80,7 @@ describe('A login API and websocket BDD test', () => {
                     expect(message).to.have.a.property('name');
                     expect(message.name).to.equal('timeSync');
                     expect(message).to.have.a.property('msg');
-                    expect(message.msg).to.be.a('number');                
+                    expect(message.msg).to.be.a('number');         
                 });
             });
         }
